@@ -1,0 +1,20 @@
+{
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+  };
+
+  outputs = { self, nixpkgs }:
+    let
+      system = "x86_64-linux";
+      overlay = final: prev: { };
+      pkgs = import nixpkgs { inherit system; overlays = [overlay]; };
+    in {
+      devShells.${system}.default = pkgs.mkShell {
+        buildInputs = with pkgs; [
+          dos2unix
+          just
+          qmk
+        ];
+      };
+    };
+}
